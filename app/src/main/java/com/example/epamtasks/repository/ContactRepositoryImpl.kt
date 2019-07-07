@@ -50,7 +50,7 @@ class ContactRepositoryImpl(context: Context) : ContactRepository {
         val contact = Contact()
 
         val project = arrayOf(
-            ContactsContract.Data.CONTACT_ID, ContactsContract.Data.DISPLAY_NAME
+            ContactsContract.Data.CONTACT_ID
         )
 
         val selection = "${ContactsContract.Data.CONTACT_ID} = ?"
@@ -68,27 +68,28 @@ class ContactRepositoryImpl(context: Context) : ContactRepository {
             cursor.moveToFirst()
             val contactId = cursor.getString(0)
             contact.id = contactId
-            contact.name = cursor.getString(1)
+//            contact.name = cursor.getString(1)
             contact.phone = getPhones(contactId)
             contact.email = getEmails(contactId)
         }
 
-        Log.d("myLogs", "${contact.phone.size}, ${contact.email.size}")
+        Log.d("myLogs", "${contact.phone.joinToString()}, ${contact.email.size}")
         return contact
     }
 
     private fun getPhones(id: String): List<String>{
         val phones = ArrayList<String>()
 
-        val projection = arrayOf(ContactsContract.CommonDataKinds.Phone.DATA1)
-        val selection = "${ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID} = ?"
-        val selectionArgs = arrayOf(id)
+        val projection = arrayOf(ContactsContract.Data.DATA1)
+        val selection = "${ContactsContract.Data.CONTACT_ID} = '$id' AND " +
+                "${ContactsContract.Data.MIMETYPE} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}'"
+//        val selectionArgs = arrayOf(id)
 
         val emailCursor = resolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            ContactsContract.Data.CONTENT_URI,
             projection,
             selection,
-            selectionArgs,
+            null,
             null
         )
 

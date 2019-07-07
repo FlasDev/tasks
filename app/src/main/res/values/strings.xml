@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">EpamTasks</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_color_label">Change Color</string>
+    <string name="swap_fragment_label">Swap fragment</string>
+    <string name="secondfragment_label">SecondFragment</string>
+    <string name="third_fragment_label">Third Fragment</string>
 </resources>

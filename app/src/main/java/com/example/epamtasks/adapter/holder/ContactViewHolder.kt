@@ -12,7 +12,7 @@ class ContactViewHolder(
     override fun onBind(t: Contact) {
         binding.apply {
             contactName.text = t.name
-            contactPhone.text = t.phone[0]
+//            contactPhone.text = t.phone[0]
         }
     }
 }

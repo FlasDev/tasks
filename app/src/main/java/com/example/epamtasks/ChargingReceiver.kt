@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class ChargingReceiver : BroadcastReceiver() {
 
@@ -20,9 +21,7 @@ class ChargingReceiver : BroadcastReceiver() {
             }
         }
 
-
-        context.sendBroadcast(newIntent)
-
+        LocalBroadcastManager.getInstance(context).sendBroadcast(newIntent)
     }
 
     companion object {

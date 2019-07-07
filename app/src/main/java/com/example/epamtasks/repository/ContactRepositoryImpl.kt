@@ -13,19 +13,17 @@ class ContactRepositoryImpl(context: Context) : ContactRepository {
         val contacts = ArrayList<Contact>()
 
         val project = arrayOf(
-            ContactsContract.Data.CONTACT_ID, ContactsContract.Data.DISPLAY_NAME,
-            ContactsContract.Data.DATA1
+            ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME
         )
 
-        val selection = "${ContactsContract.Data.MIMETYPE} = ?"
-
+//        val selection = "${ContactsContract.Contacts.}"
         val selectionArgs = arrayOf(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
 
         val cursorProvider = resolver.query(
             ContactsContract.Data.CONTENT_URI,
             project,
-            selection,
-            selectionArgs,
+            null,
+            null,
             null
         )
 
@@ -37,8 +35,8 @@ class ContactRepositoryImpl(context: Context) : ContactRepository {
                 while (moveToNext()) {
                     val id = getString(0)
                     val name = getString(1)
-                    val phone = getString(2)
-                    contacts.add(Contact(id, name, listOf(phone)))
+//                    val phone = getString(2)
+                    contacts.add(Contact(id, name))
                 }
             }
         }
@@ -80,13 +78,13 @@ class ContactRepositoryImpl(context: Context) : ContactRepository {
     private fun getPhones(id: String): List<String>{
         val phones = ArrayList<String>()
 
-        val projection = arrayOf(ContactsContract.Data.DATA1)
-        val selection = "${ContactsContract.Data.CONTACT_ID} = '$id' AND " +
-                "${ContactsContract.Data.MIMETYPE} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}'"
+        val projection = arrayOf(ContactsContract.CommonDataKinds.Phone.DATA1)
+
+        val selection = "${ContactsContract.CommonDataKinds.Phone.CONTACT_ID} = '$id'"
 //        val selectionArgs = arrayOf(id)
 
         val emailCursor = resolver.query(
-            ContactsContract.Data.CONTENT_URI,
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             projection,
             selection,
             null,
